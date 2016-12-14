@@ -10,7 +10,7 @@ class test(object):
     def __call__(self, func):
         def run():
             func(*self.args())
-        run.func_name = func.func_name
+        run.__name__ = func.__name__
         return run
     def args(self, func):
         raise NotImplementedError()
@@ -68,7 +68,7 @@ def hasnot(a, b):
 def raises(exctype, func, *args, **kwargs):
     try:
         func(*args, **kwargs)
-    except exctype, inst:
+    except exctype as inst:
         pass
     else:
         func_name = getattr(func, "func_name", "<builtin_function>")

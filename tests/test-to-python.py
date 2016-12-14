@@ -3,6 +3,10 @@
 # This file is part of the python-spidermonkey package released
 # under the MIT license.
 import t
+try:
+    unicode
+except NameError:
+    unicode = str
 
 @t.cx()
 def test_to_py_int(cx):
