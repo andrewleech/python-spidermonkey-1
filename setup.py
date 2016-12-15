@@ -29,8 +29,6 @@ import os
 import subprocess as sp
 import sys
 from distutils.dist import Distribution
-import ez_setup
-ez_setup.use_setuptools()
 from setuptools import setup, Extension
 
 DEBUG = "--debug" in sys.argv
