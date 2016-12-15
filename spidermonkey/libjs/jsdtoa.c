@@ -50,7 +50,7 @@
 #include "jsnum.h"
 
 #ifdef JS_THREADSAFE
-#include "prlock.h"
+#include <nspr/prlock.h>
 #endif
 
 /****************************************************************

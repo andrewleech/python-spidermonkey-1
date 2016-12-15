@@ -42,10 +42,11 @@
 #ifdef JS_THREADSAFE
 
 #include "jstypes.h"
-#include "pratom.h"
-#include "prlock.h"
-#include "prcvar.h"
-#include "prthread.h"
+
+#include <nspr/pratom.h>
+#include <nspr/prlock.h>
+#include <nspr/prcvar.h>
+#include <nspr/prthread.h>
 
 #include "jsprvtd.h"    /* for JSScope, etc. */
 #include "jspubtd.h"    /* for JSRuntime, etc. */

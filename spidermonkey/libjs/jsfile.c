@@ -88,8 +88,8 @@
 #include <string.h>
 
 /* NSPR dependencies */
-#include "prio.h"
-#include "prerror.h"
+#include <nspr/prio.h>
+#include <nspr/prerror.h>
 
 #define SPECIAL_FILE_STRING     "Special File"
 #define CURRENTDIR_PROPERTY     "currentDir"
