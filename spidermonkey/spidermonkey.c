@@ -22,35 +22,93 @@ PyTypeObject* IteratorType = NULL;
 PyTypeObject* HashCObjType = NULL;
 PyObject* JSError = NULL;
 
+struct module_state {
+    PyObject *error;
+};
+
+#if PY_MAJOR_VERSION >= 3
+#define GETSTATE(m) ((struct module_state*)PyModule_GetState(m))
+#else
+#define GETSTATE(m) (&_state)
+static struct module_state _state;
+#endif
+
 static PyMethodDef spidermonkey_methods[] = {
     {NULL}
 };
 
+
+#if PY_MAJOR_VERSION >= 3
+
+static int spidermonkey_traverse(PyObject *m, visitproc visit, void *arg) {
+    Py_VISIT(GETSTATE(m)->error);
+    return 0;
+}
+
+static int spidermonkey_clear(PyObject *m) {
+    Py_CLEAR(GETSTATE(m)->error);
+    return 0;
+}
+
+
+static struct PyModuleDef moduledef = {
+        PyModuleDef_HEAD_INIT,
+        "spidermonkey",
+        "The Python-Spidermonkey bridge.",
+        sizeof(struct module_state),
+        spidermonkey_methods,
+        NULL,
+        spidermonkey_traverse,
+        spidermonkey_clear,
+        NULL
+};
+
+#define INITERROR return NULL
+
+PyMODINIT_FUNC
+PyInit_spidermonkey(void)
+
+#else // PY_MAJOR_VERSION == 2
+#define INITERROR return
+
 PyMODINIT_FUNC
 initspidermonkey(void)
+#endif
 {
     PyObject* m;
     
-    if(PyType_Ready(&_RuntimeType) < 0) return;
-    if(PyType_Ready(&_ContextType) < 0) return;
-    if(PyType_Ready(&_ObjectType) < 0) return;
+    if(PyType_Ready(&_RuntimeType) < 0) INITERROR;
+    if(PyType_Ready(&_ContextType) < 0) INITERROR;
+    if(PyType_Ready(&_ObjectType) < 0) INITERROR;
 
     _ArrayType.tp_base = &_ObjectType;
-    if(PyType_Ready(&_ArrayType) < 0) return;
+    if(PyType_Ready(&_ArrayType) < 0) INITERROR;
 
     _FunctionType.tp_base = &_ObjectType;
-    if(PyType_Ready(&_FunctionType) < 0) return;
+    if(PyType_Ready(&_FunctionType) < 0) INITERROR;
 
-    if(PyType_Ready(&_IteratorType) < 0) return;
+    if(PyType_Ready(&_IteratorType) < 0) INITERROR;
 
-    if(PyType_Ready(&_HashCObjType) < 0) return;
+    if(PyType_Ready(&_HashCObjType) < 0) INITERROR;
     
+    #if PY_MAJOR_VERSION >= 3
+    m = PyModule_Create(&moduledef);
+    #else
+
     m = Py_InitModule3("spidermonkey", spidermonkey_methods,
             "The Python-Spidermonkey bridge.");
+    #endif
 
     if(m == NULL)
     {
-        return;
+        INITERROR;
+    }
+
+    struct module_state *st = GETSTATE(m);
+    st->error = PyErr_NewException("spidermonkey.Error", NULL, NULL);
+    if (st->error == NULL) {
+        Py_DECREF(m);
+        INITERROR;
     }
 
     RuntimeType = &_RuntimeType;
@@ -85,4 +143,8 @@ initspidermonkey(void)
     PyModule_AddObject(m, "JSError", JSError);
     
     SpidermonkeyModule = m;
+
+#if PY_MAJOR_VERSION >= 3
+    return m;
+#endif
 }
