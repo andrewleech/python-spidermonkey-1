@@ -267,6 +267,7 @@ Object_rich_cmp(Object* self, PyObject* other, int op)
     PyObject* val = NULL;
     PyObject* otherval = NULL;
     PyObject* ret = NULL;
+    PyObject* cmp = NULL;
     JSContext* cx;
     JSObject* iter;
     JSBool status = JS_FALSE;
@@ -275,7 +276,6 @@ Object_rich_cmp(Object* self, PyObject* other, int op)
     jsval pval;
     int llen;
     int rlen;
-    int cmp;
 
     JS_BeginRequest(self->cx->cx);
 
@@ -332,10 +332,10 @@ Object_rich_cmp(Object* self, PyObject* other, int op)
             goto success;
         }
 
-        cmp = PyObject_Compare(val, otherval);
-        if(PyErr_Occurred()) goto error;
+        cmp = PyObject_RichCompare(val, otherval, op);
+        if(cmp == NULL) goto error;
 
-        if(cmp != 0)
+        if(!PyObject_IsTrue(cmp))
         {
             if(op == Py_EQ) ret = Py_False;
             else ret = Py_True;
