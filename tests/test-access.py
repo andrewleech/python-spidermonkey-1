@@ -86,6 +86,7 @@ def test_dissalow_call(cx):
         def __call__(self, arg):
             return arg * 2
     def check(obj, name):
+        name = name.decode() if isinstance(name, bytes) else name
         return name != "__call__"
     cx.add_global("PepsiCan", PepsiCan)
     cx.set_access(check)
@@ -103,6 +104,7 @@ def test_on_wrapped_obj(cx):
     cx.add_global("whee", func)
 
     def check(obj, name):
+        name = name.decode() if isinstance(name, bytes) else name
         return name in ["__call__", "__init__"] or not name.startswith("_")
     cx.set_access(check);
 
