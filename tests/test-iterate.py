@@ -18,8 +18,8 @@ ret;
 
 @t.glbl("data", {"foo": "bar", "baz": "bam"})
 def test_iter_py_map(cx, glbl):
-    t.eq(cx.execute(js_for_script), ["foo", "baz"])
-    t.eq(cx.execute(js_for_each_script), ["bar", "bam"])
+    t.eq(set(cx.execute(js_for_script)), {"foo", "baz"})
+    t.eq(set(cx.execute(js_for_each_script)), {"bar", "bam"})
 
 @t.glbl("data", ["a", 2, "zing!"])
 def test_iter_py_array(cx, glbl):
