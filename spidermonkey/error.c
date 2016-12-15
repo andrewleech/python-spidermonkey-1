@@ -36,24 +36,10 @@ add_frame(const char* srcfile, const char* funcname, int linenum)
     str = PyBytes_FromString("");
     if(str == NULL) goto error;
 
-    code = PyCode_New(
-        0,                      /*co_argcount*/
-#if PY_MAJOR_VERSION >= 3
-        0,                      /*co_kwonlyargcount*/
-#endif
-        0,                      /*co_nlocals*/
-        0,                      /*co_stacksize*/
-        0,                      /*co_flags*/
-        str,                    /*co_code*/
-        tpl,                    /*co_consts*/
-        tpl,                    /*co_names*/
-        tpl,                    /*co_varnames*/
-        tpl,                    /*co_freevars*/
-        tpl,                    /*co_cellvars*/
+    code = PyCode_NewEmpty(
         src,                    /*co_filename*/
         func,                   /*co_name*/
-        linenum,                /*co_firstlineno*/
-        str                     /*co_lnotab*/
+        linenum                 /*co_firstlineno*/
     );
     if(code == NULL) goto error;
    
@@ -94,7 +80,7 @@ report_error_cb(JSContext* cx, const char* message, JSErrorReport* report)
 
     if(!PyErr_Occurred())
     {
-        PyErr_SetString(JSError, message);
+        PyErr_SetString(JSError, mesg);
     }
 
     add_frame(srcfile, "JavaScript code", report->lineno);
