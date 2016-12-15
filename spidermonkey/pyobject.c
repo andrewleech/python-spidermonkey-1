@@ -106,12 +106,12 @@ js_get_prop(JSContext* jscx, JSObject* jsobj, jsval key, jsval* val)
     if(Context_has_access(pycx, jscx, pyobj, pykey) <= 0) goto done;
     
     // Yeah. It's ugly as sin.
-    if(PyString_Check(pykey) || PyUnicode_Check(pykey))
+    if(PyBytes_Check(pykey) || PyUnicode_Check(pykey))
     {
         utf8 = PyUnicode_AsUTF8String(pykey);
         if(utf8 == NULL) goto done;
 
-        data = PyString_AsString(utf8);
+        data = PyBytes_AsString(utf8);
         if(data == NULL) goto done;
 
         if(strcmp("__iterator__", data) == 0)
@@ -281,7 +281,7 @@ js_call(JSContext* jscx, JSObject* jsobj, uintN argc, jsval* argv, jsval* rval)
     }
 
     // Use '__call__' as a notice that we want to execute a function.
-    attrcheck = PyString_FromString("__call__");
+    attrcheck = PyBytes_FromString("__call__");
     if(attrcheck == NULL) goto error;
 
     if(Context_has_access(pycx, jscx, pyobj, attrcheck) <= 0) goto error;
@@ -350,7 +350,7 @@ js_ctor(JSContext* jscx, JSObject* jsobj, uintN argc, jsval* argv, jsval* rval)
     }
 
     // Use '__init__' to signal use as a constructor.
-    attrcheck = PyString_FromString("__init__");
+    attrcheck = PyBytes_FromString("__init__");
     if(attrcheck == NULL) goto error;
 
     if(Context_has_access(pycx, jscx, pyobj, attrcheck) <= 0) goto error;

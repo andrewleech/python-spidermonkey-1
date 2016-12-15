@@ -31,7 +31,7 @@ py2js(Context* cx, PyObject* obj)
     {
         return py2js_double(cx, obj);
     }
-    else if(PyString_Check(obj) || PyUnicode_Check(obj))
+    else if(PyBytes_Check(obj) || PyUnicode_Check(obj))
     {
         return py2js_string(cx, obj);
     }

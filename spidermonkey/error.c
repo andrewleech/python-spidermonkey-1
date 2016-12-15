@@ -21,10 +21,10 @@ add_frame(const char* srcfile, const char* funcname, int linenum)
     PyCodeObject* code = NULL;
     PyFrameObject* frame = NULL;
 
-    src = PyString_FromString(srcfile);
+    src = PyBytes_FromString(srcfile);
     if(src == NULL) goto error;
 
-    func = PyString_FromString(funcname);
+    func = PyBytes_FromString(funcname);
     if(func == NULL) goto error;
     
     glbl = PyModule_GetDict(SpidermonkeyModule);
@@ -33,7 +33,7 @@ add_frame(const char* srcfile, const char* funcname, int linenum)
     tpl = PyTuple_New(0);
     if(tpl == NULL) goto error;
 
-    str = PyString_FromString("");
+    str = PyBytes_FromString("");
     if(str == NULL) goto error;
 
     code = PyCode_New(

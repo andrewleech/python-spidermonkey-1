@@ -17,7 +17,7 @@ py2js_string_obj(Context* cx, PyObject* str)
     char* bytes;
     Py_ssize_t len;
 
-    if(PyString_Check(str))
+    if(PyBytes_Check(str))
     {
         conv = PyUnicode_FromEncodedObject(str, "utf-8", "replace");
         if(conv == NULL) goto error;
@@ -31,7 +31,7 @@ py2js_string_obj(Context* cx, PyObject* str)
 
     encoded = PyUnicode_AsEncodedString(str, "utf-16", "strict");
     if(encoded == NULL) goto error;
-    if(PyString_AsStringAndSize(encoded, &bytes, &len) < 0) goto error;
+    if(PyBytes_AsStringAndSize(encoded, &bytes, &len) < 0) goto error;
     if(len < 2)
     {
         PyErr_SetString(PyExc_ValueError, "Failed to find byte-order mark.");

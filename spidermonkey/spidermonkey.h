@@ -10,6 +10,8 @@
 #define SPIDERMONKEY_H
 
 #include <Python.h>
+#include "bytesobject.h"
+
 #include "structmember.h"
 
 #include <jsapi.h>
