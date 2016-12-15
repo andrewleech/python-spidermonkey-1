@@ -64,6 +64,44 @@ success:
 }
 
 PyObject*
+HashCObj_rich_cmp(PyObject* self, PyObject* other, int op)
+{
+    printf("entered");
+    PyObject* ret = NULL;
+    
+    if(op != Py_EQ && op != Py_NE) return Py_NotImplemented;
+
+    if(!PyObject_TypeCheck(self, HashCObjType))
+    {
+        PyErr_SetString(PyExc_ValueError, "Invalid comparison object.");
+        goto error;
+    }
+
+    if(!PyObject_TypeCheck(other, HashCObjType))
+    {
+        PyErr_SetString(PyExc_ValueError, "Invalid comparison object 2.");
+        goto error;
+    }
+    
+    printf("checking");
+    if(((HashCObj*)self)->cobj == ((HashCObj*)other)->cobj)
+    {
+        printf("eq");
+        ret = (op == Py_EQ)? Py_True : Py_False;
+    }
+    else
+    {
+        printf("neq");
+        ret = (op == Py_EQ)? Py_False : Py_True;
+    }
+
+error:
+success:
+    Py_XINCREF(ret);
+    return ret;
+}
+
+PyObject*
 HashCObj_repr(PyObject* self)
 {
     return PyBytes_FromFormat("<%s Ptr: %p>",
@@ -99,4 +137,7 @@ PyTypeObject _HashCObjType = {
     0,                                          /*tp_as_buffer*/
     0,                                          /*tp_flags*/
     "Internal hashing object.",                 /*tp_doc*/
+    0,                                          /*tp_traverse*/
+    0,                                          /*tp_clear*/
+    (richcmpfunc)HashCObj_rich_cmp,             /*tp_richcompare*/
 };
