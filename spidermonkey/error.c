@@ -38,6 +38,9 @@ add_frame(const char* srcfile, const char* funcname, int linenum)
 
     code = PyCode_New(
         0,                      /*co_argcount*/
+#if PY_MAJOR_VERSION >= 3
+        0,                      /*co_kwonlyargcount*/
+#endif
         0,                      /*co_nlocals*/
         0,                      /*co_stacksize*/
         0,                      /*co_flags*/
