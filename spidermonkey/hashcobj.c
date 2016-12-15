@@ -66,7 +66,6 @@ success:
 PyObject*
 HashCObj_rich_cmp(PyObject* self, PyObject* other, int op)
 {
-    printf("entered");
     PyObject* ret = NULL;
     
     if(op != Py_EQ && op != Py_NE) return Py_NotImplemented;
@@ -83,15 +82,12 @@ HashCObj_rich_cmp(PyObject* self, PyObject* other, int op)
         goto error;
     }
     
-    printf("checking");
     if(((HashCObj*)self)->cobj == ((HashCObj*)other)->cobj)
     {
-        printf("eq");
         ret = (op == Py_EQ)? Py_True : Py_False;
     }
     else
     {
-        printf("neq");
         ret = (op == Py_EQ)? Py_False : Py_True;
     }
 
@@ -124,7 +120,11 @@ PyTypeObject _HashCObjType = {
     0,                                          /*tp_print*/
     0,                                          /*tp_getattr*/
     0,                                          /*tp_setattr*/
+#if PY_MAJOR_VERSION >= 3
+    0,                                          /*tp_compare*/
+#else
     (cmpfunc)HashCObj_cmp,                      /*tp_compare*/
+#endif    
     (reprfunc)HashCObj_repr,                    /*tp_repr*/
     0,                                          /*tp_as_number*/
     0,                                          /*tp_as_sequence*/
