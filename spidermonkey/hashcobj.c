@@ -67,7 +67,7 @@ PyObject*
 HashCObj_repr(PyObject* self)
 {
     return PyBytes_FromFormat("<%s Ptr: %p>",
-            self->ob_type->tp_name,
+            Py_TYPE(self)->tp_name,
             ((HashCObj*)self)->cobj);
 }
 

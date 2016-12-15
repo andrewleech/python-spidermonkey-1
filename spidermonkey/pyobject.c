@@ -391,7 +391,7 @@ create_class(Context* cx, PyObject* pyobj)
     char* classname = NULL;
     int flags = JSCLASS_HAS_RESERVED_SLOTS(1);
 
-    curr = Context_get_class(cx, pyobj->ob_type->tp_name);
+    curr = Context_get_class(cx, Py_TYPE(pyobj)->tp_name);
     if(curr != NULL) return (JSClass*) HashCObj_AsVoidPtr(curr);
 
     jsclass = (JSClass*) malloc(sizeof(JSClass));
@@ -401,14 +401,14 @@ create_class(Context* cx, PyObject* pyobj)
         goto error;
     }
    
-    classname = (char*) malloc(strlen(pyobj->ob_type->tp_name)*sizeof(char));
+    classname = (char*) malloc(strlen(Py_TYPE(pyobj)->tp_name)*sizeof(char));
     if(classname == NULL)
     {
         PyErr_NoMemory();
         goto error;
     }
     
-    strcpy((char*) classname, pyobj->ob_type->tp_name);
+    strcpy((char*) classname, Py_TYPE(pyobj)->tp_name);
     jsclass->name = classname;
     
     jsclass->flags = flags;
@@ -431,7 +431,7 @@ create_class(Context* cx, PyObject* pyobj)
     
     curr = HashCObj_FromVoidPtr(jsclass);
     if(curr == NULL) goto error;
-    if(Context_add_class(cx, pyobj->ob_type->tp_name, curr) < 0) goto error;
+    if(Context_add_class(cx, Py_TYPE(pyobj)->tp_name, curr) < 0) goto error;
 
     ret = jsclass;
     goto success;
