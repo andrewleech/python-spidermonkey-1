@@ -64,19 +64,19 @@ def pkg_config(pkg_name, config=None):
             "extra_link_args": []
         }
     prefixes = {
-        "-I": ("include_dirs", 2),
-        "-L": ("library_dirs", 2),
-        "-l": ("libraries", 2),
-        "-D": ("extra_compile_args", 0),
-        "-Wl": ("extra_link_args", 0)
+        b"-I": ("include_dirs", 2),
+        b"-L": ("library_dirs", 2),
+        b"-l": ("libraries", 2),
+        b"-D": ("extra_compile_args", 0),
+        b"-Wl": ("extra_link_args", 0)
     }
     for flag in stdout.split():
         for prefix in prefixes:
             if not flag.startswith(prefix):
                 continue
             # Hack for xulrunner
-            if flag.endswith("/stable"):
-                flag = flag[:-6] + "unstable"
+            if flag.endswith(b"/stable"):
+                flag = flag[:-6] + b"unstable"
             name, trim = prefixes[prefix]
             config[name].append(flag[trim:])
     return config
