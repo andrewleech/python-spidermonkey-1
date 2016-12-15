@@ -12,6 +12,12 @@
 #include <Python.h>
 #include "bytesobject.h"
 
+#if PY_MAJOR_VERSION >= 3
+    #define PyInt_Check PyLong_Check
+    #define PyInt_AsLong PyLong_AsLong
+    #define PyInt_FromLong PyLong_FromLong
+#endif
+
 #include "structmember.h"
 
 #include <jsapi.h>
