@@ -767,7 +767,8 @@ Context_has_access(Context* pycx, JSContext* jscx, PyObject* obj, PyObject* key)
     tpl = Py_BuildValue("(OO)", obj, key);
     if(tpl == NULL) goto done;
 
-    tmp = PyObject_Call(pycx->access, tpl, NULL);
+    tmp = PyObject_CallObject(pycx->access, tpl);
+    if(tmp == NULL) goto done;
     res = PyObject_IsTrue(tmp);
 
 done:
