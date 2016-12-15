@@ -66,7 +66,7 @@ def test_py_with_global(rt):
 
 @t.rt()
 def test_py_with_invalid_global(rt):
-    t.raises(TypeError, rt.new_context, "Break!")
+    t.raises(TypeError, rt.new_context, False)
 
 @t.rt()
 def test_py_get_global(rt):
