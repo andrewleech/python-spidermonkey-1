@@ -130,8 +130,7 @@ static PyMethodDef Iterator_methods[] = {
 };
 
 PyTypeObject _IteratorType = {
-    PyObject_HEAD_INIT(NULL)
-    0,                                          /*ob_size*/
+    PyVarObject_HEAD_INIT(NULL, 0)
     "spidermonkey.Iterator",                    /*tp_name*/
     sizeof(Iterator),                           /*tp_basicsize*/
     0,                                          /*tp_itemsize*/

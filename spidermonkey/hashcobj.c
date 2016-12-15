@@ -78,8 +78,7 @@ HashCObj_hash(HashCObj* self)
 }
 
 PyTypeObject _HashCObjType = {
-    PyObject_HEAD_INIT(NULL)
-    0,                                          /*ob_size*/
+    PyVarObject_HEAD_INIT(NULL, 0)
     "spidermonkey._HashCObj",                   /*tp_name*/
     sizeof(HashCObj),                           /*tp_basicsize*/
     0,                                          /*tp_itemsize*/

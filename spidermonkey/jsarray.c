@@ -116,8 +116,7 @@ static PySequenceMethods Array_seq_methods = {
 };
 
 PyTypeObject _ArrayType = {
-    PyObject_HEAD_INIT(NULL)
-    0,                                          /*ob_size*/
+    PyVarObject_HEAD_INIT(NULL, 0)
     "spidermonkey.Array",                       /*tp_name*/
     sizeof(Object),                             /*tp_basicsize*/
     0,                                          /*tp_itemsize*/

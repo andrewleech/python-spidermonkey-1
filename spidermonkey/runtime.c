@@ -98,8 +98,7 @@ static PyMethodDef Runtime_methods[] = {
 };
 
 PyTypeObject _RuntimeType = {
-    PyObject_HEAD_INIT(NULL)
-    0,                                          /*ob_size*/
+    PyVarObject_HEAD_INIT(NULL, 0)
     "spidermonkey.Runtime",                     /*tp_name*/
     sizeof(Runtime),                            /*tp_basicsize*/
     0,                                          /*tp_itemsize*/

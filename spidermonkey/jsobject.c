@@ -386,8 +386,7 @@ PyMappingMethods Object_mapping = {
 };
 
 PyTypeObject _ObjectType = {
-    PyObject_HEAD_INIT(NULL)
-    0,                                          /*ob_size*/
+    PyVarObject_HEAD_INIT(NULL, 0)
     "spidermonkey.Object",                      /*tp_name*/
     sizeof(Object),                             /*tp_basicsize*/
     0,                                          /*tp_itemsize*/
